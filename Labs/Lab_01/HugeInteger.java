@@ -4,9 +4,18 @@ import java.util.Random;
 
 public class HugeInteger {
     private String value = "";
-
+    private boolean signed; // negative or positive 
+    
     public HugeInteger(String val) {
         this.value = val;
+
+        if (val.charAt(0) == '-'){
+            this.signed = true;
+        }
+        else {
+            this.signed = false;
+        }
+        
     }
 
     public HugeInteger(int n) {
@@ -21,23 +30,26 @@ public class HugeInteger {
     }
 
     public HugeInteger add(HugeInteger h) {
+        
         String addVal = "";
         String reverse = "";
+      
 
         int digitSum = 0; // sum of digit
         int carry = 0; // carry for next int
 
+
         if (h.isBiggerThan(this) == true) {
+
+            int diffLen = h.value.length() - this.value.length();
             
-            for (int i = h.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
-                digitSum = 0;
-                try {
-                    digitSum = Character.getNumericValue(this.value.charAt(i))
-                            + Character.getNumericValue(h.value.charAt(i)) + carry; // adds the values
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("J");
-                    digitSum = Character.getNumericValue(h.value.charAt(i)) + carry;
-                } finally {
+            for (int i = this.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
+                    digitSum = 0; 
+                    
+                   if (i > diffLen) {digitSum += Character.getNumericValue(this.value.charAt(i-diffLen)); System.out.println("Bruh");} // checks when the length 
+
+                    digitSum += Character.getNumericValue(h.value.charAt(i))+ carry; // adds the values
+
                     if (digitSum >= 10) {
                         carry = 1;
                         digitSum %= 10;
@@ -51,8 +63,9 @@ public class HugeInteger {
                         addVal += "1";
                     }
                 }
+                
             }
-        }
+        
 
         else {
             for (int i = this.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
@@ -87,6 +100,7 @@ public class HugeInteger {
     }
 
     public HugeInteger multiply(HugeInteger h) {
+        
         return null;
     }
 

@@ -3,8 +3,8 @@ package Labs.Lab_01;
 public class TestHugeInteger {
 
     public static void main (String args[]){
-        HugeInteger h = new HugeInteger(5);
-        HugeInteger h2 = new HugeInteger(6);
+        HugeInteger h = new HugeInteger(1);
+        HugeInteger h2 = new HugeInteger(2);
 
         System.out.println(h.toString());
         System.out.println(h2.toString());
