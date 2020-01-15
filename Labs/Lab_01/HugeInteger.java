@@ -26,6 +26,7 @@ public class HugeInteger {
                 randDigit++;
             } // checks for first digit to be 0, if so, add 1
             this.value = this.value + Integer.toString(randDigit);
+            this.signed = false;
         }
     }
 
@@ -39,14 +40,14 @@ public class HugeInteger {
         int carry = 0; // carry for next int
 
 
-        if (h.isBiggerThan(this) == true) {
+        if (h.isBiggerThan(this) == true) { // check if h or this is bigger
 
             int diffLen = h.value.length() - this.value.length();
             
-            for (int i = this.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
+            for (int i = h.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
                     digitSum = 0; 
                     
-                   if (i > diffLen) {digitSum += Character.getNumericValue(this.value.charAt(i-diffLen)); System.out.println("Bruh");} // checks when the length 
+                   if (i >= diffLen) {digitSum += Character.getNumericValue(this.value.charAt(i-diffLen));} // checks when the length 
 
                     digitSum += Character.getNumericValue(h.value.charAt(i))+ carry; // adds the values
 
@@ -68,23 +69,28 @@ public class HugeInteger {
         
 
         else {
+            int diffLen = this.value.length() - h.value.length();
+            
             for (int i = this.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
-                digitSum = Character.getNumericValue(this.value.charAt(i))
-                        + Character.getNumericValue(h.value.charAt(i)) + carry; // adds the values
+                    digitSum = 0; 
+                    
+                   if (i >= diffLen) {digitSum += Character.getNumericValue(h.value.charAt(i-diffLen));} // checks when the length 
 
-                if (digitSum >= 10) {
-                    carry = 1;
-                    digitSum %= 10;
-                } else {
-                    carry = 0;
+                    digitSum += Character.getNumericValue(this.value.charAt(i))+ carry; // adds the values
+
+                    if (digitSum >= 10) {
+                        carry = 1;
+                        digitSum %= 10;
+                    } else {
+                        carry = 0;
+                    }
+
+                    addVal += Integer.toString(digitSum); // concatenates value to the end of the string
+
+                    if (carry == 1 && i == 0) { // adds 1 to the end for carrying
+                        addVal += "1";
+                    }
                 }
-
-                addVal += Integer.toString(digitSum); // concatenates value to the end of the string
-
-                if (carry == 1 && i == 0) { // adds 1 to the end for carrying
-                    addVal += "1";
-                }
-            }
         }
 
         for (int j = addVal.length() - 1; j >= 0; j--) {
@@ -92,6 +98,7 @@ public class HugeInteger {
             reverse += addVal.charAt(j);
         }
         HugeInteger addHugeInteger = new HugeInteger(reverse);
+
         return addHugeInteger;
     }
 
@@ -105,8 +112,54 @@ public class HugeInteger {
     }
 
     public int compareTo(HugeInteger h) {
-        return 0;
-    }
+        if (this.value.charAt(0) == '-') { // check if negative
+            if (h.value.charAt(0) == '-') { // checks if h is also negative
+                if (this.value.length() > h.value.length()) { // checks only LENGTH 
+                    return -1;
+                } 
+                
+                else if (this.value.length() == h.value.length()){
+                    for (int i = 1; i < this.value.length(); i++){
+                        if (Character.getNumericValue(this.value.charAt(i)) > Character.getNumericValue(h.value.charAt(i))){
+                            return -1;
+                        }
+                        else if (Character.getNumericValue(this.value.charAt(i)) < Character.getNumericValue(h.value.charAt(i))){
+                            return 1;
+                        }
+                    }
+                    return 0;
+                }
+                else {
+                    return 1; 
+                }
+            }
+
+
+            else {return -1;} // returns -1 because a negative number will always be smaller
+
+        }
+
+        if (this.value.length() > h.value.length()) { // checks only LENGTH 
+            return 1;
+        } 
+
+        else if (this.value.length() == h.value.length()){
+            for (int i = 0; i < this.value.length(); i++){
+                if (Character.getNumericValue(this.value.charAt(i)) > Character.getNumericValue(h.value.charAt(i))){
+                    return 1;
+                }
+                else if (Character.getNumericValue(this.value.charAt(i)) < Character.getNumericValue(h.value.charAt(i))){
+                    return -1;
+                }
+            }
+            return 0;
+        }
+        else {
+            return -1; 
+        }
+
+        }
+    
 
     public String toString() {
 
@@ -120,7 +173,7 @@ public class HugeInteger {
             }
         }
 
-        if (this.value.length() > h.value.length()) {
+        if (this.value.length() >= h.value.length()) {
             return true;
         } else {
             return false;
