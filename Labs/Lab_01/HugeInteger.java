@@ -7,18 +7,16 @@ public class HugeInteger {
     private boolean signed; // negative or positive 
     
     public HugeInteger(String val) {
-        
 
         if (val.charAt(0) == '-'){
             this.signed = true;
-            this.value = val.substring(1,val.length()); 
+            this.value = val.substring(1, val.length());
         }
         else {
             this.signed = false;
             this.value = val;
         }
-
-       
+        
     }
 
     public HugeInteger(int n) {
@@ -32,13 +30,6 @@ public class HugeInteger {
             this.signed = false;
         }
 
-        int sign = rand.nextInt(1); // generates from 0 - 1
-        if (sign == 1) {
-            this.signed = false;
-        }
-        else{
-            this.signed = true;
-        }
         
     }
 
