@@ -1,5 +1,6 @@
 package Labs.Lab_01;
 
+import java.lang.StringBuilder;
 import java.util.Random;
 
 public class HugeInteger {
@@ -65,8 +66,8 @@ public class HugeInteger {
 
         int digitSum = 0; // sum of digit
         int carry = 0; // carry for next int
-        
-        if (this.signed == true && h.signed == true){ // -n + -m 
+
+        if (this.signed == true && h.signed == true) { // -n + -m
 
         }
 
@@ -137,51 +138,112 @@ public class HugeInteger {
 
     public HugeInteger subtract(HugeInteger h) {
         HugeInteger sub = new HugeInteger("");
-        if (this.signed == false){ // n
+
+        StringBuilder sb = new StringBuilder();
+        
+        int digitDiff = 0;
+        int borrow = 0;
+        int carry = 0;
+        String addVal = "";
+        int diffLen = Math.abs(this.value.length() - h.value.length()); // absolute value of differential length
+
+        if (this.signed == false) { // n
             if (h.signed == true) { // -m (n--m)
                 sub = this.add(h);
                 return sub;
+            } else { // (n-m) ()
+
+                if (this.compareTo(h) == 1) { // case where this (n) is greater than h (m)
+                    
+                    for (int i = h.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
+                        borrow = 0;
+                        carry = 0;
+                        digitDiff = 0;
+                        if (i >= diffLen) {
+                            if (Character.getNumericValue(this.value.charAt(i)) < Character.getNumericValue(h.value.charAt(i - diffLen)) ){
+                                borrow = 1; 
+                                carry = 10;
+                            }
+                            digitDiff = Character.getNumericValue(this.value.charAt(i)) - Character.getNumericValue(h.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
+                        } // checks when the length
+                        else {
+                            digitDiff = Character.getNumericValue(this.value.charAt(i));
+                        }
+                        
+
+                        // adds the values
+
+                        addVal += Integer.toString(digitDiff); // concatenates value to the end of the string
+                        
+                    }
+                    sub.value = addVal;
+                        return sub;
+                }
+
+                else {
+
+                }
+
             }
-            else{ // (n-m) ()
-                sub = this.add(h);
-                return sub;
-            }
-            
-        }
-        else { // -n
+
+        } else { // -n
             if (h.signed == false) { // -n - m
                 sub = this.add(h);
                 sub.invertSign();
                 return sub;
-            }
-            else { // -n --m
+            } else { // -n --m
 
             }
         }
-        
+
         return null;
 
     }
 
-    public HugeInteger multiply(HugeInteger h) {
+    public HugeInteger multiply(HugeInteger h) { // utilizes the Karatsuba algorithm
 
-        for (int i = 0 ; i < this.length(); i++){
-            for (int j = 0 ; j < h.length(); j++) {
+        int hSize = h.value.length();
+        int thisSize = this.value.length();
+        int carry = 0;
+        int sum;
+        int digitProd = 0;
 
+        if (this.isBiggerThan(h) == true) {
+            for (int i = 0; i < h.value.length(); i++) {
+                for (int j = 0; j < this.value.length(); i++) {
+                    digitProd = (Character.getNumericValue(this.value.charAt(i))
+                            * Character.getNumericValue(this.value.charAt(j))) + carry;
+
+                    if (digitProd >= 10) {
+                        carry = 1;
+                        digitProd %= 10;
+                    } else {
+                        carry = 0;
+                    }
+                }
             }
         }
+
+        HugeInteger prod = new HugeInteger(3);
+
+        // CONDITIONS FOR SIGN WHEN MULTIPLYING
+        if (this.signed == true && h.signed == true) {
+            prod.signed = false;
+        } else if ((this.signed == false && h.signed == true) || (this.signed == true && h.signed == false)) {
+            prod.signed = true;
+        } else {
+            prod.signed = false;
+        }
+
         return null;
     }
-
 
     public int compareTo(HugeInteger h) {
-        if (this.value.charAt(0) == '-') { // check if negative
-            if (h.value.charAt(0) == '-') { // checks if h is also negative
+        if (this.signed == true) { // check if negative
+            if (h.signed == true) { // checks if h is also negative
                 if (this.value.length() > h.value.length()) { // checks only LENGTH
                     return -1;
-                }
-
-                else if (this.value.length() == h.value.length()) {
+                } else if (this.value.length() == h.value.length()) {
                     for (int i = 1; i < this.value.length(); i++) {
                         if (Character.getNumericValue(this.value.charAt(i)) > Character
                                 .getNumericValue(h.value.charAt(i))) {
@@ -242,11 +304,6 @@ public class HugeInteger {
     }
 
     public boolean isBiggerThan(HugeInteger h) {
-        if (this.value.charAt(0) == '-') { // check if negative
-            if (h.value.charAt(0) != '-') {
-            }
-        }
-
         if (this.value.length() >= h.value.length()) {
             return true;
         } else {
@@ -254,11 +311,12 @@ public class HugeInteger {
         }
     }
 
-    public void invertSign () {
+    public void invertSign() {
         if (this.signed == true) {
             this.signed = false;
+        } else {
+            this.signed = true;
         }
-        else {this.signed = true;}
 
     }
 
