@@ -63,14 +63,24 @@ public class HugeInteger {
 
         String addVal = "";
         String reverse = "";
+        HugeInteger addHugeInteger = new HugeInteger("");
 
         int digitSum = 0; // sum of digit
         int carry = 0; // carry for next int
 
-        if (this.signed == true && h.signed == true) { // -n + -m
-
+        if (this.signed == true){
+            if (h.signed == true){addHugeInteger.signed = true;} // double negative
+            else { // this is negative, h is positive
+                addHugeInteger = h.subtract(this);
+            }
         }
-
+        else {
+            if (h.signed == true) {addHugeInteger = this.subtract(h);}
+            else {
+                addHugeInteger.signed = false;
+            }
+        }
+ 
         if (h.isBiggerThan(this) == true) { // check if h or this is bigger
 
             int diffLen = h.value.length() - this.value.length();
@@ -131,72 +141,129 @@ public class HugeInteger {
 
             reverse += addVal.charAt(j);
         }
-        HugeInteger addHugeInteger = new HugeInteger(reverse);
-
+        
+        addHugeInteger.value = reverse; 
         return addHugeInteger;
     }
 
     public HugeInteger subtract(HugeInteger h) {
         HugeInteger sub = new HugeInteger("");
+        HugeInteger top = new HugeInteger("");
+        HugeInteger bot = new HugeInteger("");
 
-        StringBuilder sb = new StringBuilder();
-        
+        StringBuilder diff = new StringBuilder("");
         int digitDiff = 0;
         int borrow = 0;
         int carry = 0;
-        String addVal = "";
+        
         int diffLen = Math.abs(this.value.length() - h.value.length()); // absolute value of differential length
+        
+        if (this.compareTo(h) == 0){ // if both values are same return 0; 
+            sub.value = "0";
+            sub.signed = false;
+            return sub; 
+        }
 
         if (this.signed == false) { // n
             if (h.signed == true) { // -m (n--m)
                 sub = this.add(h);
                 return sub;
-            } else { // (n-m) ()
+            } else { // (n-m) () ////////////////////////////////////////////////////////////////////////////////////
 
-                if (this.compareTo(h) == 1) { // case where this (n) is greater than h (m)
-                    
-                    for (int i = h.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
-                        borrow = 0;
-                        carry = 0;
+                    if (this.compareTo(h) == -1){ // inverts sign when the lower is greater than top
+                        top.value = h.value;
+                        bot.value = this.value;
+                        sub.signed = true;
+                    }
+                    else 
+                    {
+                        top.value = this.value;
+                        bot.value = h.value;
+                    }
+
+                    for (int i = top.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
                         digitDiff = 0;
+                        carry = 0;
                         if (i >= diffLen) {
-                            if (Character.getNumericValue(this.value.charAt(i)) < Character.getNumericValue(h.value.charAt(i - diffLen)) ){
-                                borrow = 1; 
+                            if (Character.getNumericValue(top.value.charAt(i)) < Character.getNumericValue(bot.value.charAt(i - diffLen)) ){ 
                                 carry = 10;
                             }
-                            digitDiff = Character.getNumericValue(this.value.charAt(i)) - Character.getNumericValue(h.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
+                            digitDiff = Character.getNumericValue(top.value.charAt(i)) - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
                         } // checks when the length
                         else {
-                            digitDiff = Character.getNumericValue(this.value.charAt(i));
+                            digitDiff = Character.getNumericValue(top.value.charAt(i));
+                        }
+
+                        if (carry == 10) {
+                            borrow = 1;
+                        }
+                        else {
+                            borrow = 0;
+                        }
+                        // adds the values
+                        diff.append(digitDiff);// addVal += Integer.toString(digitDiff); // concatenates value to the end of the string
+                        if (borrow == 1 && i == 0) { // adds 1 to the end for carrying
+                            diff.deleteCharAt(0);
                         }
                         
-
-                        // adds the values
-
-                        addVal += Integer.toString(digitDiff); // concatenates value to the end of the string
-                        
                     }
-                    sub.value = addVal;
-                        return sub;
+                    
+                    sub.value = diff.reverse().toString();
+                    return sub;
                 }
+            
 
-                else {
-
-                }
-
-            }
-
+////////////////////////////////////////////////////////////////////////////////////
         } else { // -n
             if (h.signed == false) { // -n - m
                 sub = this.add(h);
-                sub.invertSign();
+                sub.signed = true;
                 return sub;
             } else { // -n --m
+                
+                if (this.compareTo(h) == 1){ // inverts sign when the lower is smaller than top
+                    top.value = h.value;
+                    bot.value = this.value;
+                    sub.signed = false;
+                }
+                else 
+                {
+                    top.value = this.value;
+                    bot.value = h.value;
+                    sub.signed = true;
+                }
 
+                for (int i = top.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
+                    digitDiff = 0;
+                    carry = 0;
+                    if (i >= diffLen) {
+                        if (Character.getNumericValue(top.value.charAt(i)) < Character.getNumericValue(bot.value.charAt(i - diffLen)) ){ 
+                            carry = 10;
+                        }
+                        digitDiff = Character.getNumericValue(top.value.charAt(i)) - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
+                    } // checks when the length
+                    else {
+                        digitDiff = Character.getNumericValue(top.value.charAt(i));
+                    }
+
+                    if (carry == 10) {
+                        borrow = 1;
+                    }
+                    else {
+                        borrow = 0;
+                    }
+                    // adds the values
+                    diff.append(digitDiff);// addVal += Integer.toString(digitDiff); // concatenates value to the end of the string
+                    if (borrow == 1 && i == 0) { // adds 1 to the end for carrying
+                        diff.deleteCharAt(0);
+                    }
+                    
+                }
+                
+                sub.value = diff.reverse().toString();
+                return sub;
             }
         }
-
-        return null;
 
     }
 
@@ -220,6 +287,7 @@ public class HugeInteger {
                     } else {
                         carry = 0;
                     }
+
                 }
             }
         }
@@ -288,12 +356,13 @@ public class HugeInteger {
     public String toString() {
         int count = 0;
         for (int i = 0; i < this.value.length(); i++) {
-            if (this.value.charAt(i) == '0') {
+            if (this.value.charAt(i) == '0' && this.value != "0" ) {
                 count++;
             } else {
                 break;
             }
         }
+
 
         if (this.signed == true) {
             return "-" + this.value.substring(count, this.value.length());

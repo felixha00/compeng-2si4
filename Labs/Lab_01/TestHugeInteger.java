@@ -17,8 +17,8 @@ public class TestHugeInteger {
         HugeInteger h3 = h.add(h2);
         System.out.println("Sum: "+h3.toString());
 
-        HugeInteger h7 = new HugeInteger("999");
-        HugeInteger h8 = new HugeInteger("100");
+        HugeInteger h7 = new HugeInteger("33333");
+        HugeInteger h8 = new HugeInteger("3929");
         HugeInteger h9 = h7.subtract(h8);
         System.out.println("Difference: "+h9.toString());
       //  System.out.println(h.compareTo(h2));
