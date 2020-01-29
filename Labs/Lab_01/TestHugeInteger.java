@@ -28,6 +28,7 @@ public class TestHugeInteger {
             System.out.println("String constructor throws exception for valid input\n");
         }
 //-68851396737734872124269688749537716194685685817918
+//-68851396737734972124269688749537716194685685817918
 //-68851396737734972124279688759537716194685685817918
 //-68851396737734972124271-688751-537716194685685817918
 //-68851396737734972124269688749537716194685685817918
@@ -217,7 +218,7 @@ public class TestHugeInteger {
             System.out.println("Error during subtraction");
         }
         System.out.println("Multiplication");
-        /*
+        
         try{
             x1 = new HugeInteger("-412271185238869583206634189084");
             x2 = new HugeInteger("-6190979126996148761252293435131397205598718168957");
@@ -255,13 +256,8 @@ public class TestHugeInteger {
         catch(Exception e){
             System.out.println("Error during multiplication");
         }
-        */
-            x1 = new HugeInteger("253");
-            x2 = new HugeInteger("33");
-            x3 = x1.multiply(x2);
-            System.out.println(x1.toString());
-            System.out.println(x2.toString());
-            System.out.println(x3.toString());
+        
+           
 
         System.out.println("Comparison");
         try{
@@ -330,6 +326,8 @@ public class TestHugeInteger {
         System.out.println("Difference: "+h9.toString());
       //  System.out.println(h.compareTo(h2));
        // System.out.println(h4.compareTo(h5));
+    // -68851396737734872124269688749537716194685685817918
+    // -68851396737734972124269688749537716194685685817918
        */
     }
 }

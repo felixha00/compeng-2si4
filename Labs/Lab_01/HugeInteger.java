@@ -10,7 +10,7 @@ public class HugeInteger {
 
     public HugeInteger(String val) {
 
-        if (val == "" || val == "-0") { // empty string
+        if (val == "" || val == "-0") { // empty string or -0
             val = "0";
         }
 
@@ -42,7 +42,7 @@ public class HugeInteger {
     }
 
     public HugeInteger(int n) throws IllegalArgumentException {
-        if (n <= 0){
+        if (n <= 0) {
             throw new IllegalArgumentException();
         }
         Random rand = new Random();
@@ -52,7 +52,7 @@ public class HugeInteger {
                 randDigit++;
             } // checks for first digit to be 0, if so, add 1
             this.value = this.value + Integer.toString(randDigit);
-            
+
         }
 
         int sign = rand.nextInt(2);
@@ -74,28 +74,27 @@ public class HugeInteger {
         int carry = 0; // carry for next int
 
         ///////////////////////////////////////////
-        if (this.signed == true){
-            if (h.signed == true){addHugeInteger.signed = true;} // double negative
+        if (this.signed == true) {
+            if (h.signed == true) {
+                addHugeInteger.signed = true;
+            } // double negative
             else { // this is negative, h is positive
                 HugeInteger this2 = new HugeInteger(this.value);
                 this2.signed = false;
                 addHugeInteger = h.subtract(this2);
-                return addHugeInteger; 
+                return addHugeInteger;
             }
-        }
-        else {
+        } else {
             if (h.signed == true) {
                 HugeInteger h2 = new HugeInteger(h.value);
                 h2.signed = false;
-                addHugeInteger = this.subtract(h2); 
-                return addHugeInteger;}
-            else {
+                addHugeInteger = this.subtract(h2);
+                return addHugeInteger;
+            } else {
                 addHugeInteger.signed = false;
             }
         }
 
-
- 
         if (h.isBiggerThan(this) == true) { // check if h or this is bigger
 
             int diffLen = h.value.length() - this.value.length();
@@ -156,8 +155,8 @@ public class HugeInteger {
 
             reverse += addVal.charAt(j);
         }
-        
-        addHugeInteger.value = reverse; 
+
+        addHugeInteger.value = reverse;
         return addHugeInteger;
     }
 
@@ -170,13 +169,13 @@ public class HugeInteger {
         int digitDiff = 0;
         int borrow = 0;
         int carry = 0;
-        
+
         int diffLen = Math.abs(this.value.length() - h.value.length()); // absolute value of differential length
-        
-        if (this.compareTo(h) == 0){ // if both values are same return 0; 
+
+        if (this.compareTo(h) == 0) { // if both values are same return 0;
             sub.value = "0";
             sub.signed = false;
-            return sub; 
+            return sub;
         }
 
         if (this.signed == false) { // n
@@ -185,57 +184,54 @@ public class HugeInteger {
                 sub = this.add(h2);
                 sub.signed = false;
                 return sub;
-            } else { // (n-m) () ////////////////////////////////////////////////////////////////////////////////////
-                    // ONLY POSITIVES N AND M GO HERE
-                    if (this.compareTo(h) == -1){ // inverts sign when the lower is greater than top
-                        top.value = h.value;
-                        bot.value = this.value;
-                        sub.signed = true;
-                    }
-                    else 
-                    {
-                        top.value = this.value;
-                        bot.value = h.value;
-                    }
-
-                    for (int i = top.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
-                        
-                        digitDiff = 0;
-                        carry = 0;
-                        if (i >= diffLen) {
-                            if (Character.getNumericValue(top.value.charAt(i)) < (Character.getNumericValue(bot.value.charAt(i - diffLen)) +borrow)  ){ 
-                                carry = 10;
-                            }
-                            digitDiff = Character.getNumericValue(top.value.charAt(i)) - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
-                            
-                        } // checks when the length
-                        else {
-                            digitDiff = Character.getNumericValue(top.value.charAt(i));
-                        }
-                        
-                        if (carry == 10) {
-                            borrow = 1;
-                        }
-                        else {
-                            borrow = 0;
-                        }
-                        //System.out.println(digitDiff);
-                        
-                        
-
-                        diff.append(digitDiff);// // concatenates value to the end of the string
-                        if (borrow == 1 && i == 0) { // checks for when overflow of borrow so deletes first char 
-                            diff.deleteCharAt(0);
-                        }
-                        
-                    }
-                    
-                    sub.value = diff.reverse().toString();
-                    return sub;
+            } else { // (n-m) ()
+                     // ////////////////////////////////////////////////////////////////////////////////////
+                     // ONLY POSITIVE N AND M GO HERE
+                if (this.compareTo(h) == -1) { // inverts sign when the lower is greater than top
+                    top.value = h.value;
+                    bot.value = this.value;
+                    sub.signed = true;
+                } else {
+                    top.value = this.value;
+                    bot.value = h.value;
                 }
-            
 
-////////////////////////////////////////////////////////////////////////////////////
+                for (int i = top.value.length() - 1; i >= 0; i--) { // starts from least significant decimal
+
+                    digitDiff = 0;
+                    carry = 0;
+                    if (i >= diffLen) {
+                        if (Character.getNumericValue(top.value
+                                .charAt(i)) < (Character.getNumericValue(bot.value.charAt(i - diffLen)) + borrow)) {
+                            carry = 10;
+                        }
+                        digitDiff = Character.getNumericValue(top.value.charAt(i))
+                                - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; 
+
+                    } // checks when the length
+                    else {
+                        digitDiff = Character.getNumericValue(top.value.charAt(i));
+                    }
+
+                    if (carry == 10) {
+                        borrow = 1;
+                    } else {
+                        borrow = 0;
+                    }
+                    // System.out.println(digitDiff);
+
+                    diff.append(digitDiff);// // concatenates value to the end of the string
+                    if (borrow == 1 && i == 0) { // checks for when overflow of borrow so deletes first char
+                        diff.deleteCharAt(0);
+                    }
+
+                }
+
+                sub.value = diff.reverse().toString();
+                return sub;
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////////
         } else { // -n
             if (h.signed == false) { // -n - m
                 HugeInteger this2 = new HugeInteger(this.value);
@@ -243,14 +239,12 @@ public class HugeInteger {
                 sub.signed = true;
                 return sub;
             } else { // -n --m
-                
-                if (this.compareTo(h) == 1){ // inverts sign when the lower is smaller by LENGTH
+
+                if (this.compareTo(h) == 1) { // inverts sign when the lower is smaller (reverse since both are negative)
                     top.value = h.value;
                     bot.value = this.value;
                     sub.signed = false;
-                }
-                else 
-                {
+                } else {
                     top.value = this.value;
                     bot.value = h.value;
                     sub.signed = true;
@@ -260,30 +254,33 @@ public class HugeInteger {
                     digitDiff = 0;
                     carry = 0;
                     if (i >= diffLen) {
-                        if (Character.getNumericValue(top.value.charAt(i)) < Character.getNumericValue(bot.value.charAt(i - diffLen)) +borrow ){ 
+                        if (Character.getNumericValue(top.value.charAt(i)) < Character
+                                .getNumericValue(bot.value.charAt(i - diffLen))) {
                             carry = 10;
                         }
-                        digitDiff = Character.getNumericValue(top.value.charAt(i)) - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; // h is the smaller number (length or otherwise)
-                    } // checks when the length
+                        digitDiff = Character.getNumericValue(top.value.charAt(i))
+                        - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; 
+                       
+                    } // checks when the string ends. 
                     else {
                         digitDiff = Character.getNumericValue(top.value.charAt(i));
                     }
                     
+
                     if (carry == 10) {
                         borrow = 1;
-                    }
-                    else {
+                    } else {
                         borrow = 0;
                     }
                     // adds the values
-                    diff.append(digitDiff);// addVal += Integer.toString(digitDiff); // concatenates value to the end of the string
+                    diff.append(digitDiff);// addVal += Integer.toString(digitDiff); // concatenates value to the end of
+                                           // the string
                     if (borrow == 1 && i == 0) { // adds 1 to the end for carrying
                         diff.deleteCharAt(0);
                     }
-                   
-                    
+
                 }
-                
+
                 sub.value = diff.reverse().toString();
                 return sub;
             }
@@ -292,46 +289,101 @@ public class HugeInteger {
     }
 
     public HugeInteger multiply(HugeInteger h) { // utilizes the Karatsuba algorithm
+        if (this.value == "0" || h.value == "0"){
+            HugeInteger sub = new HugeInteger("0");
+            return sub;
+        }
 
         int carry = 0;
         int digitProd = 0;
-        String prodStr = "";
         HugeInteger prod = new HugeInteger("0");
         HugeInteger h2 = new HugeInteger("0");
         StringBuilder sb = new StringBuilder("");
         int zCount = 0;
 
         if (this.isBiggerThan(h) == true) {
-            for (int i = h.value.length() -1; i>= 0; i--) {
-                for (int j = this.value.length() -1; j>= 0; j--) {
-                    digitProd = (Character.getNumericValue(this.value.charAt(i))
+            for (int i = h.value.length() - 1; i >= 0; i--) {
+                for (int j = this.value.length() - 1; j >= 0; j--) {
+                    digitProd = (Character.getNumericValue(h.value.charAt(i))
                             * Character.getNumericValue(this.value.charAt(j))) + carry;
-                            System.out.println(digitProd);
+
+                   
                     if (digitProd >= 10) {
-                        if (i != 0)
-                        {
                         carry = digitProd / 10;
                         digitProd %= 10;
+                        if (j != 0) {
+                            sb.append(digitProd); // each line for adding
+                        }
+                        
+                        else { // append it reversed
+                            sb.append(digitProd); 
+                            sb.append(carry);
+
+                            //sb.reverse().insert(0, digitProd); // inserts full number in front
+                            //sb.reverse(); // reverses it back 
                         }
                     } else {
                         carry = 0;
+                        sb.append(digitProd);
+                        
                     }
                     
-                    sb.append(digitProd); // each line for adding
                     
+
                 }
 
                 h2 = new HugeInteger(sb.reverse().toString());
+                //System.out.println("LINE: " + sb.toString());
                 prod = prod.add(h2);
-                prodStr=""; // makes string empty
-
-                zCount++; // number of zeroes 
-                for (int k = 0; k < zCount; k++){ // adds zeroes based on the digit position.
-                    prodStr += "0";
+                sb = new StringBuilder("");
+                zCount++;
+                for (int k = 0; k < zCount; k++) { // adds zeroes based on the digit position.
+                    sb.append("0");
                 }
-            }
-        }
+                carry = 0;
 
+            }
+
+        }
+        else {
+            for (int i = this.value.length() - 1; i >= 0; i--) {
+                for (int j = h.value.length() - 1; j >= 0; j--) {
+                    digitProd = (Character.getNumericValue(this.value.charAt(i))
+                            * Character.getNumericValue(h.value.charAt(j))) + carry;
+
+                    if (digitProd >= 10) {
+                        carry = digitProd / 10;
+                        digitProd %= 10;
+                        if (j != 0) {
+                           
+                            sb.append(digitProd); // each line for adding
+                        }
+                        
+                        else {
+                            sb.append(digitProd); 
+                            sb.append(carry);
+                        }
+                    } else {
+                        carry = 0;
+                        sb.append(digitProd);
+                        
+                    }
+
+                }
+
+                h2 = new HugeInteger(sb.reverse().toString());
+               // System.out.println("LINE: " + sb.toString());
+                prod = prod.add(h2);
+                sb = new StringBuilder("");
+                zCount++;
+                for (int k = 0; k < zCount; k++) { // adds zeroes based on the digit position.
+                    sb.append("0");
+                }
+                carry = 0;
+
+            }
+
+        }
 
         // CONDITIONS FOR SIGN WHEN MULTIPLYING
         if (this.signed == true && h.signed == true) {
@@ -342,14 +394,14 @@ public class HugeInteger {
             prod.signed = false;
         }
 
-        return prod; 
+        return prod;
     }
 
     public int compareTo(HugeInteger h) {
         if (this.signed == true) { // check if negative
             if (h.signed == true) { // checks if h is also negative
                 if (this.value.length() > h.value.length()) { // checks only LENGTH
-                    return -1;
+                    return -1; 
                 } else if (this.value.length() == h.value.length()) {
                     for (int i = 1; i < this.value.length(); i++) {
                         if (Character.getNumericValue(this.value.charAt(i)) > Character
@@ -402,7 +454,6 @@ public class HugeInteger {
             }
         }
 
-
         if (this.signed == true) {
             return "-" + this.value.substring(count, this.value.length());
         } else {
@@ -417,15 +468,6 @@ public class HugeInteger {
         } else {
             return false;
         }
-    }
-
-    public void invertSign() {
-        if (this.signed == true) {
-            this.signed = false;
-        } else {
-            this.signed = true;
-        }
-
     }
 
 }
