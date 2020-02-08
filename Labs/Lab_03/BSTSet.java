@@ -8,10 +8,12 @@ public class BSTSet {
     }
 
     public BSTSet(int[] input){
-
+        for (int i = 0; i < input.length; i++){
+            for (int j = 0; j < )
+        }
     }
 
-    public boolean isIn(int v){
+    public boolean isIn(int v){ // Binary Search
         return true; 
         
     }
@@ -37,7 +39,7 @@ public class BSTSet {
     }
 
     public int size(){
-        return 1;
+        return this..length;
     }
 
     public int height(){
@@ -65,6 +67,6 @@ public class BSTSet {
     }
 
     public void printNonRec(){
-        
+
     }
 }
