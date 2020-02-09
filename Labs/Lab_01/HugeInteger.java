@@ -3,7 +3,6 @@ package Labs.Lab_01;
 import java.lang.StringBuilder;
 import java.util.Random;
 
-
 public class HugeInteger {
     private String value = "";
     private boolean signed; // negative or positive
@@ -206,7 +205,7 @@ public class HugeInteger {
                             carry = 10;
                         }
                         digitDiff = Character.getNumericValue(top.value.charAt(i))
-                                - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; 
+                                - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry;
 
                     } // checks when the length
                     else {
@@ -240,7 +239,8 @@ public class HugeInteger {
                 return sub;
             } else { // -n --m
 
-                if (this.compareTo(h) == 1) { // inverts sign when the lower is smaller (reverse since both are negative)
+                if (this.compareTo(h) == 1) { // inverts sign when the lower is smaller (reverse since both are
+                                              // negative)
                     top.value = h.value;
                     bot.value = this.value;
                     sub.signed = false;
@@ -259,13 +259,12 @@ public class HugeInteger {
                             carry = 10;
                         }
                         digitDiff = Character.getNumericValue(top.value.charAt(i))
-                        - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry; 
-                       
-                    } // checks when the string ends. 
+                                - Character.getNumericValue(bot.value.charAt(i - diffLen)) - borrow + carry;
+
+                    } // checks when the string ends.
                     else {
                         digitDiff = Character.getNumericValue(top.value.charAt(i));
                     }
-                    
 
                     if (carry == 10) {
                         borrow = 1;
@@ -289,7 +288,7 @@ public class HugeInteger {
     }
 
     public HugeInteger multiply(HugeInteger h) { // utilizes the Karatsuba algorithm
-        if (this.value == "0" || h.value == "0"){
+        if (this.value == "0" || h.value == "0") {
             HugeInteger sub = new HugeInteger("0");
             return sub;
         }
@@ -307,33 +306,26 @@ public class HugeInteger {
                     digitProd = (Character.getNumericValue(h.value.charAt(i))
                             * Character.getNumericValue(this.value.charAt(j))) + carry;
 
-                   
                     if (digitProd >= 10) {
                         carry = digitProd / 10;
                         digitProd %= 10;
                         if (j != 0) {
-                            sb.append(digitProd); // each line for adding
+                            sb.append(digitProd);
                         }
-                        
                         else { // append it reversed
-                            sb.append(digitProd); 
+                            sb.append(digitProd);
                             sb.append(carry);
-
-                            //sb.reverse().insert(0, digitProd); // inserts full number in front
-                            //sb.reverse(); // reverses it back 
                         }
                     } else {
                         carry = 0;
                         sb.append(digitProd);
-                        
+
                     }
-                    
-                    
 
                 }
 
                 h2 = new HugeInteger(sb.reverse().toString());
-                //System.out.println("LINE: " + sb.toString());
+                // System.out.println("LINE: " + sb.toString());
                 prod = prod.add(h2);
                 sb = new StringBuilder("");
                 zCount++;
@@ -344,8 +336,7 @@ public class HugeInteger {
 
             }
 
-        }
-        else {
+        } else {
             for (int i = this.value.length() - 1; i >= 0; i--) {
                 for (int j = h.value.length() - 1; j >= 0; j--) {
                     digitProd = (Character.getNumericValue(this.value.charAt(i))
@@ -355,24 +346,24 @@ public class HugeInteger {
                         carry = digitProd / 10;
                         digitProd %= 10;
                         if (j != 0) {
-                           
+
                             sb.append(digitProd); // each line for adding
                         }
-                        
+
                         else {
-                            sb.append(digitProd); 
+                            sb.append(digitProd);
                             sb.append(carry);
                         }
                     } else {
                         carry = 0;
                         sb.append(digitProd);
-                        
+
                     }
 
                 }
 
                 h2 = new HugeInteger(sb.reverse().toString());
-               // System.out.println("LINE: " + sb.toString());
+                // System.out.println("LINE: " + sb.toString());
                 prod = prod.add(h2);
                 sb = new StringBuilder("");
                 zCount++;
@@ -401,7 +392,7 @@ public class HugeInteger {
         if (this.signed == true) { // check if negative
             if (h.signed == true) { // checks if h is also negative
                 if (this.value.length() > h.value.length()) { // checks only LENGTH
-                    return -1; 
+                    return -1;
                 } else if (this.value.length() == h.value.length()) {
                     for (int i = 1; i < this.value.length(); i++) {
                         if (Character.getNumericValue(this.value.charAt(i)) > Character
@@ -422,9 +413,8 @@ public class HugeInteger {
                 return -1;
             } // returns -1 because a negative number will always be smaller
 
-        }
-        else {
-            if (h.signed == true){
+        } else {
+            if (h.signed == true) {
                 return 1;
             }
         }
@@ -432,7 +422,6 @@ public class HugeInteger {
         if (this.value.length() > h.value.length()) { // checks only LENGTH
             return 1;
         }
-
 
         else if (this.value.length() == h.value.length()) {
             for (int i = 0; i < this.value.length(); i++) {

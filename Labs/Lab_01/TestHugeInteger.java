@@ -13,7 +13,11 @@ public class TestHugeInteger {
        
         // String constructor test cases
         // Valid inputs
-        
+        long m0 = Runtime.getRuntime().freeMemory();
+        String s = new String("Alexandru Tanasescu");
+        long m1 = Runtime.getRuntime().freeMemory();
+        System.out.println(m0 - m1);
+    
         try{
             x1 = new HugeInteger("12345678");
             System.out.println(x1.toString());

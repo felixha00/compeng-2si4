@@ -1,3 +1,5 @@
+package Labs.Lab_03;
+
 public class TNode {
     int element;
     TNode left;
