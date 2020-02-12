@@ -13,24 +13,25 @@ public class MyStack<E> {
         top = -1;
     }   
 
-    public boolean push(int x){
+    public boolean push(E x){
         
+        vals[++top] = x;
+        return true;
     }
 
     public E pop(){
 
         if (top < 0){
-            return 0;
+            return null;
         }
         else {
-  
             return vals[top--];
         }
 
     }
 
     public boolean isEmpty() {
-         return (top < 0);
+        return (top < 0);
     }
     public E top()  {
         return null;
