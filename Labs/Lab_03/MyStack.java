@@ -3,20 +3,46 @@ package Labs.Lab_03;
 /**
  * MyStack
  */
-public class MyStack {
-    int top;
+public class MyStack<E> {
     
+    private int top;
+    private E[] vals;
+
+
     public MyStack() {
-        top = 1;
+        top = -1;
+    }   
+
+    public boolean push(int x){
+        
     }
 
-    public boolean empty() {
-        if (0 == 0){
-            return true;
+    public E pop(){
+
+        if (top < 0){
+            return 0;
+        }
+        else {
+  
+            return vals[top--];
         }
 
-        else{
-            return false; 
+    }
+
+    public boolean isEmpty() {
+         return (top < 0);
+    }
+    public E top()  {
+        return null;
+    }
+
+    public E peek(){
+        if (isEmpty()){
+            return null;
+        }
+
+        else {
+            return vals[top];
         }
     }
 }
