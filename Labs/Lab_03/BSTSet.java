@@ -206,6 +206,7 @@ public class BSTSet {
         if (root == null){
             return 0;
         }
+        return 1;
         
     }
 
@@ -246,11 +247,5 @@ public class BSTSet {
         return search(t.right, v);
     }
 
-    private void(TNode t) {
-        if (t != null) {
-            printBSTSet(t.left);
-            System.out.print(" " + t.element + ", ");
-            printBSTSet(t.right);
-        }
-    }
+    
 }
