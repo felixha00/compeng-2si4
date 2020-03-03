@@ -38,7 +38,7 @@ public class TestHashTableQuad {
     }
     public static void main(String[] args) {
         
-
+        /*
         System.out.println("TEST HASHTABLEQUAD\n===========");
         HashTableQuad hsq = new HashTableQuad(45, 5); // give size 11
 
@@ -55,7 +55,24 @@ public class TestHashTableQuad {
         hsq.printData();
         hsq.printKeysAndIndexes();
         
-        avgProbes(100000, 100);
+        //avgProbes(100000, 100);
+        */
+
+        HashTableQuad test1 = new HashTableQuad(2,0.4);
+        test1.insert(4);
+        test1.insert(1);
+        test1.insert(17);
+        test1.insert(2);
+        test1.insert(3);
+        test1.insert(15);
+        test1.insert(5);
+        test1.insert(49);
+        test1.insert(123);
+        test1.insert(245);
+        test1.insert(233);
+
+        test1.printData();
+        test1.printKeysAndIndexes();
     }
     
 }

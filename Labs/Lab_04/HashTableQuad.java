@@ -1,5 +1,7 @@
 package Labs.Lab_04;
 
+import java.lang.reflect.Array;
+
 /**
  * HashTableQuad
  */
@@ -13,12 +15,13 @@ public class HashTableQuad {
     public HashTableQuad (int maxNum, double load){
         this.nKeys = 0;
         this.maxLoad = load;
-        double minSize = maxNum/load;
-        this.size = this.nextPrime(minSize);
         
-        table = new int[this.size];
-
-        for (int i = 0; i < size; i++){
+        this.size = maxNum;
+        double minSize = maxNum/load;
+        
+        table = new int[this.nextPrime(minSize)];
+        
+        for (int i = 0; i < table.length; i++){
             table[i] = -1; // fills table with dummy values
         }
 
@@ -33,11 +36,20 @@ public class HashTableQuad {
             nKeys++;
             int index = n%size;
             int baseIndex = index;
+            try {
             while (table[index] != -1){ // linear probing
+                
                 index = (baseIndex+(count*count))%size;
                 count++;
+                
+               
             }
             table[index] = n;
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            rehash();
+            insert(n);
+        }
         }
     
     }
@@ -70,21 +82,25 @@ public class HashTableQuad {
 
     private void rehash(){
         int count = 0;
-        int newSize = this.nextPrime(2*this.size);
-        System.out.println(newSize);
+        int newSize = this.nextPrime(2*table.length);
         int[] rehashed = new int[newSize];
         
-
+        try {
         for (int i = 0; i < rehashed.length; i++){
             rehashed[i] = -1;
         }
 
         for (int i = 0; i < size; i++){
             int index = table[i]%newSize;
+            int baseIndex = index;
+            
             while (rehashed[index] != -1){ // linear probing
-                index = (index+1)%newSize;
+                index = (baseIndex+(count*count))%size;
+                count++;
             }
             rehashed[index] = table[i];
+        }
+       
         }
 
         this.table = rehashed;
