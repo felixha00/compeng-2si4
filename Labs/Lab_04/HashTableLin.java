@@ -27,7 +27,7 @@ public class HashTableLin {
 
     }
 
-    public void insert (int n){
+    public void insert (int n){ // O(n)
         
         if (nKeys == size){
             rehash();
@@ -71,7 +71,7 @@ public class HashTableLin {
         
     }
 
-    private void rehash(){
+    private void rehash(){  // O(n)
         int newSize = this.nextPrime(2*table.length);
         int[] rehashed = new int[newSize];
         
@@ -81,9 +81,6 @@ public class HashTableLin {
         }
 
         for (int i = 0; i < table.length; i++){
-            
-            
-
             
             int index = table[i]%newSize;
             if (index != -1){
@@ -100,7 +97,7 @@ public class HashTableLin {
         return;
     }
 
-    public boolean isIn(int n){
+    public boolean isIn(int n){ // O(n)
         if (this.nKeys == 0){
             return false;
         }
@@ -114,7 +111,7 @@ public class HashTableLin {
         return false; 
     }
 
-    public void printKeys(){
+    public void printKeys(){ // O(n)
         for (int i = 0; i < table.length; i++){
             if (table[i] != -1){
                 System.out.print(table[i]+" ");
@@ -124,7 +121,7 @@ public class HashTableLin {
         }
     }
 
-    public void printKeysAndIndexes(){
+    public void printKeysAndIndexes(){ // O(n)
         for (int i = 0; i < this.table.length; i++){
             if (table[i] == -1){
                 System.out.println("[" + i+ "]:\t-");
@@ -159,7 +156,6 @@ public class HashTableLin {
         int prime = (int)Math.ceil(n) - 1 ; // rounds up -1 just in case the number is already a prime, so it returns that number
         int counter;
         prime++;
-
 
         while(true){
           int l = (int) Math.sqrt(prime);
