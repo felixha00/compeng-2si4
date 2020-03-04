@@ -1,7 +1,5 @@
 package Labs.Lab_04;
 
-import java.lang.reflect.Array;
-
 /**
  * HashTableQuad
  */
@@ -34,15 +32,14 @@ public class HashTableQuad {
         }
         if (!this.isIn(n)){
             nKeys++;
-            int index = n%size;
+            int index = n%table.length;
             int baseIndex = index;
             try {
             while (table[index] != -1){ // linear probing
                 
-                index = (baseIndex+(count*count))%size;
+                index = (baseIndex+(count*count))%table.length;
                 count++;
                 
-               
             }
             table[index] = n;
         }
@@ -66,10 +63,10 @@ public class HashTableQuad {
         if (!this.isIn(n)){
             probeCount++;
             nKeys++;
-            int index = n%size;
+            int index = n%table.length;
             int baseIndex = index;
             while (table[index] != -1){ // linear probing
-                index = (baseIndex+(count*count))%size;
+                index = (baseIndex+(count*count))%table.length;
                 count++;
                 probeCount++;
             }
@@ -85,26 +82,30 @@ public class HashTableQuad {
         int newSize = this.nextPrime(2*table.length);
         int[] rehashed = new int[newSize];
         
-        try {
+        
         for (int i = 0; i < rehashed.length; i++){
             rehashed[i] = -1;
         }
 
-        for (int i = 0; i < size; i++){
-            int index = table[i]%newSize;
+        for (int i = 0; i < table.length; i++){
+            int index = table[i]%rehashed.length;
             int baseIndex = index;
-            
-            while (rehashed[index] != -1){ // linear probing
-                index = (baseIndex+(count*count))%size;
-                count++;
+
+            if (table[i] != -1){
+                while (rehashed[index] != -1){ // linear probing
+                    index = (baseIndex+(count*count))%rehashed.length;
+                    count++;
+                }
+                rehashed[index] = table[i];
+                count = 0;
             }
-            rehashed[index] = table[i];
+            
         }
        
-        }
+        
 
         this.table = rehashed;
-        this.size = newSize;
+        this.size = (int)(newSize*maxLoad); // get maximum 
         return;
     }
 
@@ -113,8 +114,8 @@ public class HashTableQuad {
             return false;
         }
 
-        int index = n%size; // set starting index
-        for (int i = index; i < size; i++){
+        int index = n%table.length; // set starting index
+        for (int i = index; i < this.table.length; i++){
             if (n == this.table[index]){
                 return true;
             }
@@ -123,7 +124,7 @@ public class HashTableQuad {
     }
 
     public void printKeys(){
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < this.table.length; i++){
             if (table[i] != -1){
                 System.out.print(table[i]+" ");
             } 
@@ -132,7 +133,7 @@ public class HashTableQuad {
     }
 
     public void printKeysAndIndexes(){
-        for (int i = 0; i < this.size; i++){
+        for (int i = 0; i < this.table.length; i++){
             if (table[i] == -1){
                 System.out.println("[" + i+ "]:\t-");
             } 
@@ -153,7 +154,8 @@ public class HashTableQuad {
         return this.maxLoad;
     }
     public void printData(){
-        System.out.println("Size: "+ getSize());
+        System.out.println("HashTableSize: "+ this.table.length);
+        System.out.println("MaxNumKeys: "+ getSize());
         System.out.println("Number of Keys: "+ getNumKeys());
         System.out.println("Maximum Load: " + getLoadFactor());
     }

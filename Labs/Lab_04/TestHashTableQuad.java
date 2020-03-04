@@ -38,41 +38,35 @@ public class TestHashTableQuad {
     }
     public static void main(String[] args) {
         
-        /*
+        
         System.out.println("TEST HASHTABLEQUAD\n===========");
-        HashTableQuad hsq = new HashTableQuad(45, 5); // give size 11
-
+        HashTableQuad hsq = new HashTableQuad(6, 0.5); // give size 11
         System.out.println("Data of HashTable after initialization:\n");
         hsq.printData();
 
-        System.out.println("\nInsert: 11, 22, 33, 44, 55, 66, 77 shows quadratic probing \n");
-        hsq.insert(11);
-        hsq.insert(22);
-        hsq.insert(33);
-        hsq.insert(44);
-        hsq.insert(55);
-        hsq.insert(66);
+        System.out.println("\nInsert: 13,26,39,15,20 \n");
+        hsq.insert(13);
+        hsq.insert(26);
+        hsq.insert(39);
+        hsq.insert(52);
+        hsq.insert(20);
         hsq.printData();
         hsq.printKeysAndIndexes();
+
+        System.out.println("\nInsert 30, forces rehashing to next double prime number");
+        hsq.insert(30);
+        hsq.printData();
+        hsq.printKeysAndIndexes();
+
+        System.out.println("\nInsert 10, already inside, does not insert and number of keys remains same");
+        hsq.insert(26);
+        hsq.printData();
+        hsq.printKeysAndIndexes();
+
+        avgProbes(100000, 100);
         
-        //avgProbes(100000, 100);
-        */
 
-        HashTableQuad test1 = new HashTableQuad(2,0.4);
-        test1.insert(4);
-        test1.insert(1);
-        test1.insert(17);
-        test1.insert(2);
-        test1.insert(3);
-        test1.insert(15);
-        test1.insert(5);
-        test1.insert(49);
-        test1.insert(123);
-        test1.insert(245);
-        test1.insert(233);
-
-        test1.printData();
-        test1.printKeysAndIndexes();
+       
     }
     
 }

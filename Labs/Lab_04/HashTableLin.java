@@ -14,29 +14,30 @@ public class HashTableLin {
     public HashTableLin (int maxNum, double load){
         this.nKeys = 0;
         this.maxLoad = load;
-        double minSize = maxNum/load;
-        this.size = this.nextPrime(minSize);
         
-        table = new int[this.size];
-
-        for (int i = 0; i < size; i++){
+        this.size = maxNum;
+        double minSize = maxNum/load;
+        
+        table = new int[this.nextPrime(minSize)];
+        
+        for (int i = 0; i < table.length; i++){
             table[i] = -1; // fills table with dummy values
         }
-        
+
 
     }
 
     public void insert (int n){
-      
+        
         if (nKeys == size){
             rehash();
         }
 
         if (!this.isIn(n)){
             nKeys++;
-            int index = n%size;
+            int index = n%table.length;
             while (table[index] != -1){ // linear probing
-                index = (index+1)%size;
+                index = (index+1)%table.length;
             }
             table[index] = n;
         }
@@ -57,9 +58,9 @@ public class HashTableLin {
         if (!this.isIn(n)){
             probeCount++;
             nKeys++;
-            int index = n%size;
+            int index = n%table.length;
             while (table[index] != -1){ // linear probing
-                index = (index+1)%size;
+                index = (index+1)%table.length;
                 probeCount++;
             }
             table[index] = n;
@@ -71,7 +72,7 @@ public class HashTableLin {
     }
 
     private void rehash(){
-        int newSize = this.nextPrime(2*this.size);
+        int newSize = this.nextPrime(2*table.length);
         int[] rehashed = new int[newSize];
         
 
@@ -79,16 +80,23 @@ public class HashTableLin {
             rehashed[i] = -1;
         }
 
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < table.length; i++){
+            
+            
+
+            
             int index = table[i]%newSize;
+            if (index != -1){
             while (rehashed[index] != -1){ // linear probing
                 index = (index+1)%newSize;
             }
             rehashed[index] = table[i];
         }
+            
+        }
 
         this.table = rehashed;
-        this.size = newSize;
+        this.size = (int)(newSize*maxLoad);
         return;
     }
 
@@ -97,8 +105,8 @@ public class HashTableLin {
             return false;
         }
 
-        int index = n%size; // set starting index
-        for (int i = index; i < size; i++){
+        int index = n%table.length; // set starting index
+        for (int i = index; i < table.length; i++){
             if (n == this.table[index]){
                 return true;
             }
@@ -107,7 +115,7 @@ public class HashTableLin {
     }
 
     public void printKeys(){
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < table.length; i++){
             if (table[i] != -1){
                 System.out.print(table[i]+" ");
                 
@@ -117,7 +125,7 @@ public class HashTableLin {
     }
 
     public void printKeysAndIndexes(){
-        for (int i = 0; i < this.size; i++){
+        for (int i = 0; i < this.table.length; i++){
             if (table[i] == -1){
                 System.out.println("[" + i+ "]:\t-");
             } 
@@ -141,7 +149,8 @@ public class HashTableLin {
 
 
     public void printData(){
-        System.out.println("Size: "+ getSize());
+        System.out.println("HashTableSize: "+ this.table.length);
+        System.out.println("MaxNumKeys: "+ getSize());
         System.out.println("Number of Keys: "+ getNumKeys());
         System.out.println("Maximum Load: " + getLoadFactor());
     }

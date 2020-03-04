@@ -42,15 +42,15 @@ public class TestHashTableLin {
     public static void main(String[] args) {
 
         System.out.println("TEST HASHTABLELIN\n===========");
-        HashTableLin hsl = new HashTableLin(20, 5);
+        HashTableLin hsl = new HashTableLin(5, 0.4);
 
         System.out.println("Data of HashTable after initialization:\n");
         hsl.printData();
 
-        System.out.println("\nInsert: 9, 5, 10, 15, 20: \n");
-        hsl.insert(9);
-        hsl.insert(5);
-        hsl.insert(10);
+        System.out.println("\nInsert: 13,26,39,15,20 \n");
+        hsl.insert(13);
+        hsl.insert(26);
+        hsl.insert(39);
         hsl.insert(15);
         hsl.insert(20);
         hsl.printData();
@@ -61,14 +61,8 @@ public class TestHashTableLin {
         hsl.printData();
         hsl.printKeysAndIndexes();
 
-        System.out.println(
-                "\nInsert 8, will insert at index 1 after 9 (since circular array and [8],[9],[10],[0] are already taken)");
-        hsl.insert(8);
-        hsl.printData();
-        hsl.printKeysAndIndexes();
-
-        System.out.println("\nInsert 10, already inside");
-        hsl.insert(10);
+        System.out.println("\nInsert 10, already inside, does not insert and number of keys remains same");
+        hsl.insert(26);
         hsl.printData();
         hsl.printKeysAndIndexes();
 
