@@ -103,9 +103,9 @@ public class TestHashTableLin {
         hsl.printData();
         hsl.printKeysAndIndexes();
 
-        //avgProbes(100000, 100);
+        avgProbes(100000, 100);
 
-        unsuccessfulProbes(100000, 100);
+        //unsuccessfulProbes(100000, 100);
 
 
 

@@ -6,7 +6,7 @@ package Labs.Lab_04;
 public class HashTableLin {
     
     //private static int probeCount;
-    private int[] table;
+    private Integer[] table;
     private int size;
     private int nKeys;
     private double maxLoad;
@@ -18,7 +18,7 @@ public class HashTableLin {
         this.size = maxNum;
         double minSize = maxNum/load;
         
-        table = new int[this.nextPrime(minSize)];
+        table = new Integer[this.nextPrime(minSize)];
         
         for (int i = 0; i < table.length; i++){
             table[i] = -1; // fills table with dummy values
@@ -75,7 +75,7 @@ public class HashTableLin {
 
     private void rehash(){  // O(n)
         int newSize = this.nextPrime(2*table.length);
-        int[] rehashed = new int[newSize];
+        Integer[] rehashed = new Integer[newSize];
         
 
         for (int i = 0; i < rehashed.length; i++){

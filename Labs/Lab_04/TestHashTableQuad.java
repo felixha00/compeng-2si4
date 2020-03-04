@@ -50,6 +50,7 @@ public class TestHashTableQuad {
         hsq.insert(39);
         hsq.insert(52);
         hsq.insert(20);
+        hsq.insert(15);
         hsq.printData();
         hsq.printKeysAndIndexes();
 
