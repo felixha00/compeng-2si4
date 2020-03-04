@@ -71,6 +71,8 @@ public class HashTableLin {
         
     }
 
+   
+
     private void rehash(){  // O(n)
         int newSize = this.nextPrime(2*table.length);
         int[] rehashed = new int[newSize];
@@ -103,6 +105,18 @@ public class HashTableLin {
         }
 
         int index = n%table.length; // set starting index
+        if (table[index] == -1){
+            return false; // not possible to find if index is empty
+        }
+        /*
+        while (n != this.table[index])
+        {
+            index = (index+1)%table.length;
+
+        }
+        return true;
+        */
+        
         for (int i = index; i < table.length; i++){
             if (n == this.table[index]){
                 return true;
@@ -111,6 +125,29 @@ public class HashTableLin {
         return false; 
     }
 
+    public int unsuccessfulprobes(int n){ // O(n)
+        int numProbes = 0;
+
+        if (this.nKeys == 0){
+            return 0;
+        }
+
+        int index = n%table.length; // set starting index
+        
+        for (int i = index; i < table.length; i++){
+            numProbes++;
+            if (n == this.table[index]){
+                return 0;
+            }
+            
+            if (table[i] == -1){
+                return numProbes; // not possible to find if index is empty, only one probe
+            }
+           
+        }
+        return numProbes; 
+
+    }
     public void printKeys(){ // O(n)
         for (int i = 0; i < table.length; i++){
             if (table[i] != -1){
