@@ -110,17 +110,29 @@ public class HashTableQuad {
     }
 
     public boolean isIn(int n){
+        //int count = 0;
+        //int baseIndex = 0;
         if (this.nKeys == 0){
             return false;
         }
 
         int index = n%table.length; // set starting index
+        //baseIndex = index; 
+        /*
+        while (n != table[index]){ // linear probing
+            index = (baseIndex+(count*count))%table.length;
+            count++;
+        }
+        return true;
+        */
+        
         for (int i = index; i < this.table.length; i++){
             if (n == this.table[index]){
                 return true;
             }
         }
         return false; 
+        
     }
 
     public void printKeys(){
